@@ -4,13 +4,16 @@ import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 
 function UserForm({ endpoint, method }) {
-    const [username, setUsername] = useState("");
+    const [rut, setRut] = useState("");
+    const [name, setName] = useState("");
+    const [phone_number, setPhone] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [loding, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
 
-    const name = method === "login" ? "Login" : "Register";
+    const names = method === "login" ? "Login" : "Register";
 
     const handleSubmit = async (event) => {
         setLoading(true);
@@ -18,7 +21,10 @@ function UserForm({ endpoint, method }) {
 
         try {
             const response = await api.post(endpoint, {
-                username,
+                rut,
+                name,
+                phone_number,
+                email,
                 password,
             });
             
@@ -38,14 +44,41 @@ function UserForm({ endpoint, method }) {
     
     return (
         <form onSubmit={ handleSubmit }>
-            <h1>{ name }</h1>
+            <h1>{ names }</h1>
             <input 
                 className="form-input" 
                 type="text"
-                value={ username }
-                onChange={(event => setUsername(event.target.value))}
-                placeholder="Username"
+                value={ rut }
+                onChange={(event => setRut(event.target.value))}
+                placeholder="Rut"
             />
+
+            { method === "register" && (
+                <>
+                    <input
+                        className="form-input"
+                        type="text"
+                        value={ name }
+                        onChange={(event) => setName(event.target.value)}
+                        placeholder="Name"
+                    />
+                    <input
+                        className="form-input"
+                        type="text"
+                        value={ phone_number }
+                        onChange={(event) => setPhone(event.target.value)}
+                        placeholder="Phone"
+                    />
+
+                    <input
+                        className="form-input"
+                        type="email"
+                        value={ email }
+                        onChange={(event) => setEmail(event.target.value)}
+                        placeholder="Email"
+                    />
+                </>
+            )}
 
             <input
                 className="form-input"
@@ -55,7 +88,7 @@ function UserForm({ endpoint, method }) {
                 placeholder="Password"
             />
             <button className="form-button" type="submit">
-                { name }
+                { names }
             </button>
         </form>
     )

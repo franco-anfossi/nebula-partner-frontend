@@ -3,14 +3,20 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import NotFound from './pages/NotFound';
-import Register from './pages/Register';
+import RegisterCompany from './pages/RegisterCompany';
+import RegisterEmployee from './pages/RegisterEmployee';
 
 function Logout() {
     localStorage.clear();
     return <Navigate to="/login" />;
 }
 
-function RegisterAndLogout() {
+function RegisterAndLogoutCompany() {
+    localStorage.clear();
+    return <RegisterCompany />;
+}
+
+function RegisterAndLogoutEmploye() {
     localStorage.clear();
     return <Register />;
 }
@@ -21,7 +27,8 @@ function Router() {
             <Routes>
                 <Route path="/" element={ <ProtectedRoute> <Home /> </ProtectedRoute>} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<RegisterAndLogout />} />
+                <Route path="/register" element={<RegisterAndLogoutCompany />} />
+                <Route path="/register/employee" element={<RegisterAndLogoutEmploye />} />
                 <Route path="*" element={<NotFound />} />
                 <Route path="/logout" element={<Logout />} />
             </Routes>
