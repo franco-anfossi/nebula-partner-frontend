@@ -1,9 +1,9 @@
-import UserForm from "../components/UserForm";
+import UserLoginForm from "../components/UserLoginForm";
 
 function Login() {
     return (
         <div>
-            <UserForm endpoint="/api/users/token/" method="login" />
+            <UserLoginForm endpoint="/api/users/token/" method="login" />
         </div>
     );
 }

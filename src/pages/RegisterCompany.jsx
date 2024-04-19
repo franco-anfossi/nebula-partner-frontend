@@ -1,8 +1,8 @@
-import UserForm from "../components/UserForm";
+import UserRegisterForm from "../components/UserRegisterForm";
 
 function RegisterCompany() {
     return (
-        <UserForm endpoint="/api/users/register/company/" method="register" />
+        <UserRegisterForm endpoint="/api/users/register/company/" method="register" />
     );
 }
 
