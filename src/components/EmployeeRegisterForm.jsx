@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api'; 
 
-function UserRegisterForm({ endpoint }) {
+function EmployeeRegisterForm({ endpoint }) {
     const [rut, setRut] = useState("");
     const [name, setName] = useState("");
     const [phone_number, setPhone] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [employeeType, setEmployeeType] = useState("");
     const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
@@ -17,16 +18,18 @@ function UserRegisterForm({ endpoint }) {
         event.preventDefault();
 
         try {
+            console.log(rut, name, phone_number, email, password, employeeType);
             await api.post(endpoint, {
                 rut,
                 name,
                 phone_number,
                 email,
                 password,
+                employee_type: employeeType,
             });
-            navigate("/login"); // Redirige al usuario a la página de inicio de sesión después del registro
+            navigate("/"); // Redirige al usuario a la página de inicio de sesión después del registro
         } catch (error) {
-            alert("An error occurred. Please try again.");
+            alert(error);
         } finally {
             setLoading(false);
         }
@@ -40,35 +43,45 @@ function UserRegisterForm({ endpoint }) {
                 type="text"
                 value={rut}
                 onChange={(event) => setRut(event.target.value)}
-                placeholder="Rut"
+                placeholder="Rut" required
             />
             <input
                 className="form-input"
                 type="text"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
-                placeholder="Name"
+                placeholder="Name" required
             />
             <input
                 className="form-input"
                 type="text"
                 value={phone_number}
                 onChange={(event) => setPhone(event.target.value)}
-                placeholder="Phone"
+                placeholder="Phone" required
             />
             <input
                 className="form-input"
                 type="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                placeholder="Email"
+                placeholder="Email" required
             />
+            <select
+                className="form-input"
+                value={employeeType}
+                onChange={(event) => setEmployeeType(event.target.value)}
+                required
+            >
+                <option value="">Select Role</option>
+                <option value="buyer">Buyer</option>
+                <option value="seller">Seller</option>
+            </select>
             <input
                 className="form-input"
                 type="password"
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                placeholder="Password"
+                placeholder="Password" required
             />
             <button className="form-button" type="submit" disabled={loading}>
                 Register
@@ -77,4 +90,4 @@ function UserRegisterForm({ endpoint }) {
     )
 }
 
-export default UserRegisterForm;
+export default EmployeeRegisterForm;
