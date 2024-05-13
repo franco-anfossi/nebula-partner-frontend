@@ -25,7 +25,7 @@ function Router() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={ <ProtectedRoute> <Home /> </ProtectedRoute>} />
+                <Route path="/" element={ <ProtectedRoute> <Home /> </ProtectedRoute> } />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<RegisterAndLogoutCompany />} />
                 <Route path="/register/employee" element={<RegisterAndLogoutEmployee />} />

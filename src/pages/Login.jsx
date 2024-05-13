@@ -3,7 +3,7 @@ import UserLoginForm from "../components/UserLoginForm";
 function Login() {
     return (
         <div>
-            <UserLoginForm endpoint="/api/users/token/" method="login" />
+            <UserLoginForm endpoint="/api/users/token/" />
         </div>
     );
 }
