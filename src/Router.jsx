@@ -16,11 +16,6 @@ function RegisterAndLogoutCompany() {
     return <RegisterCompany />;
 }
 
-function RegisterAndLogoutEmployee() {
-    localStorage.clear();
-    return <RegisterEmployee />;
-}
-
 function Router() {
     return (
         <BrowserRouter>
@@ -28,9 +23,9 @@ function Router() {
                 <Route path="/" element={ <ProtectedRoute> <Home /> </ProtectedRoute> } />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<RegisterAndLogoutCompany />} />
-                <Route path="/register/employee" element={<RegisterAndLogoutEmployee />} />
-                <Route path="*" element={<NotFound />} />
+                <Route path="/register/employee" element={<ProtectedRoute><RegisterEmployee /></ProtectedRoute>} />
                 <Route path="/logout" element={<Logout />} />
+                <Route path="*" element={<NotFound />} />
             </Routes>
         </BrowserRouter>
     );
