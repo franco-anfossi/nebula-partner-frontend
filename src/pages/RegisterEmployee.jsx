@@ -1,8 +1,12 @@
 import EmployeeRegisterForm from "../components/EmployeeRegisterForm";
+import Header from "../components/Header";
 
 function RegisterEmployee() {
     return (
-        <EmployeeRegisterForm endpoint="/api/users/register/employee/" />
+        <div>
+            <Header />
+            <EmployeeRegisterForm endpoint="/api/users/register/employee/" />
+        </div>
     );
 }
 
