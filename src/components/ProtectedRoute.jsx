@@ -1,4 +1,5 @@
 import api from '../api';
+import PropTypes from 'prop-types';
 import { jwtDecode } from 'jwt-decode';
 import { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
@@ -53,5 +54,9 @@ function ProtectedRoute({ children }) {
 
     return isAuth ? children : <Navigate to="/login" />
 }
+
+ProtectedRoute.propTypes = {
+    children: PropTypes.node.isRequired,
+};
 
 export default ProtectedRoute;
