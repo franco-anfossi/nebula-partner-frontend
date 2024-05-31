@@ -3,55 +3,62 @@ import { useNavigate } from 'react-router-dom';
 import { USER_TYPE } from '../constants';
 
 function Header({ userData }) {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const handleLogout = () => {
-        navigate('/logout');
-    };
+  const handleLogout = () => {
+    navigate('/logout');
+  };
 
-    const handleRegister = () => {
-        navigate('/register/employee');
-    }
+  const handleRegister = () => {
+    navigate('/register/employee');
+  };
 
-    const handleHome = () => {
-        navigate('/');
-    }
+  const handleHome = () => {
+    navigate('/');
+  };
 
-    return (
-        <header className="bg-indigo-600 p-4 flex justify-between items-center">
-            <div
-                className="text-white text-xl font-bold cursor-pointer"
-                onClick={handleHome}
-            >
-                PARTNER
-            </div>
-            {userData && (
-                <div className="text-white text-md mr-4 font-bold">
-                    {`${userData.name}`.toUpperCase()}
-                </div>
-            )}
-            <div className="flex space-x-4">
-                {USER_TYPE === 'company' && (
-                    <button
-                        onClick={handleRegister}
-                        className="bg-white text-indigo-600 font-bold py-2 px-4 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                        Register Employee
-                    </button>
-                )}
-                <button
-                    onClick={handleLogout}
-                    className="bg-white text-indigo-600 font-bold py-2 px-4 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                    Logout
-                </button>
-            </div>
-        </header>
-    );
+  return (
+    <header className="bg-indigo-600 p-4 flex justify-between items-center">
+      <div
+        className="text-white text-xl font-bold cursor-pointer"
+        role="button"
+        tabIndex={0}
+        onClick={handleHome}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            handleHome(e);
+          }
+        }}
+      >
+        PARTNER
+      </div>
+      {userData && (
+        <div className="text-white text-md mr-4 font-bold">
+          {`${userData.name}`.toUpperCase()}
+        </div>
+      )}
+      <div className="flex space-x-4">
+        {USER_TYPE === 'company' && (
+          <button
+            onClick={handleRegister}
+            className="bg-white text-indigo-600 font-bold py-2 px-4 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Register Employee
+          </button>
+        )}
+        <button
+          onClick={handleLogout}
+          className="bg-white text-indigo-600 font-bold py-2 px-4 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          Logout
+        </button>
+      </div>
+    </header>
+  );
 }
 
 Header.propTypes = {
-    userData: PropTypes.object,
+  userData: PropTypes.object,
 };
 
 export default Header;
