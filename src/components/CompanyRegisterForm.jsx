@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api'; 
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constants';
 
 function CompanyRegisterForm({ endpoint }) {
     const [rut, setRut] = useState("");
@@ -17,13 +18,16 @@ function CompanyRegisterForm({ endpoint }) {
         event.preventDefault();
 
         try {
-            await api.post(endpoint, {
+            const response = await api.post(endpoint, {
                 rut,
                 name,
                 phone_number,
                 email,
                 password,
             });
+            
+            localStorage.setItem(ACCESS_TOKEN, response.data.access);
+            localStorage.setItem(REFRESH_TOKEN, response.data.refresh);
             navigate("/login"); // Redirige al usuario a la página de inicio de sesión después del registro
         } catch (error) {
             alert("An error occurred. Please try again.");
