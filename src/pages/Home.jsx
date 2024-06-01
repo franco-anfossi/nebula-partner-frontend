@@ -13,7 +13,7 @@ function Home() {
         let endpoint = '';
 
         if (userType === 'company') {
-          endpoint = '/api/users/company/';
+          endpoint = '/api/users/company/current/';
         } else if (userType === 'employee') {
           endpoint = '/api/users/employee/current/';
         }

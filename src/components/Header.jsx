@@ -4,6 +4,7 @@ import { USER_TYPE } from '../constants';
 
 function Header({ userData }) {
   const navigate = useNavigate();
+  const user_type = localStorage.getItem(USER_TYPE);
 
   const handleLogout = () => {
     navigate('/logout');
@@ -38,7 +39,7 @@ function Header({ userData }) {
         </div>
       )}
       <div className="flex space-x-4">
-        {USER_TYPE === 'company' && (
+        {user_type === 'company' && (
           <button
             onClick={handleRegister}
             className="bg-white text-indigo-600 font-bold py-2 px-4 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
