@@ -2,6 +2,8 @@ import api from '../api';
 import Header from '../components/Header';
 import { USER_TYPE } from '../constants';
 import { useEffect, useState } from 'react';
+import BuyerHome from '../components/BuyerHome';
+import SellerHome from '../components/SellerHome';
 
 function Home() {
   const [userData, setUserData] = useState(null);
@@ -33,11 +35,15 @@ function Home() {
   return (
     <div>
       <Header userData={userData} />
-      <h1>Home</h1>
       {userData && (
         <div>
-          <h2>Welcome, {userData.name}</h2>
-          {/* Mostrar más datos del usuario si es necesario */}
+          {userData.employee_type === 'buyer' ? (
+            <BuyerHome />
+          ) : userData.employee_type === 'seller' ? (
+            <SellerHome />
+          ) : (
+            <p>Invalid user type</p>
+          )}
         </div>
       )}
     </div>
