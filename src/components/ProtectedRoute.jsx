@@ -10,6 +10,7 @@ function ProtectedRoute({ children }) {
 
   useEffect(() => {
     auth().catch(() => setIsAuth(false));
+    // eslint-disable-next-line
   }, []);
 
   const refreshToken = async () => {
