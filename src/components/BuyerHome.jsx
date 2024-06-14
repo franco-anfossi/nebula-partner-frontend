@@ -11,7 +11,7 @@ const BuyerHome = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await api.get('/api/posts/posts/');
+      const response = await api.get('/api/posts/posts/current/');
       console.log('Posts:', response.data);
       setPosts(response.data);
     } catch (error) {
@@ -25,7 +25,7 @@ const BuyerHome = () => {
       console.log('Creating post:', newPost);
       const response = await api.post('/api/posts/posts/', newPost);
       console.log('Post created:', response.data);
-      setNewPost({ title: '', description: '' });
+      setNewPost({ title: '', description: '' }); // Clear form
       fetchPosts(); // Refresh posts after adding a new one
     } catch (error) {
       console.error('Error creating post:', error);
@@ -86,9 +86,24 @@ const BuyerHome = () => {
               </p>
               {post.is_sold && post.chosen_seller && (
                 <p className="text-sm text-gray-600">
-                  Chosen Seller: {post.chosen_seller}
+                  Chosen Seller: {post.chosen_seller.name} (
+                  {post.chosen_seller.rut})
                 </p>
               )}
+              <div>
+                <strong>Possible Sellers:</strong>
+                {post.possible_sellers.length > 0 ? (
+                  <ul className="list-disc list-inside">
+                    {post.possible_sellers.map((seller) => (
+                      <li key={seller.id}>
+                        {seller.name} ({seller.rut})
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No possible sellers.</p>
+                )}
+              </div>
             </li>
           ))
         ) : (
