@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import NotFound from './pages/NotFound';
 import RegisterCompany from './pages/RegisterCompany';
 import RegisterEmployee from './pages/RegisterEmployee';
+import Profile from './pages/Profile';
 
 function Logout() {
   localStorage.clear();
@@ -24,8 +25,7 @@ function Router() {
           path="/"
           element={
             <ProtectedRoute>
-              {' '}
-              <Home />{' '}
+              <Home />
             </ProtectedRoute>
           }
         />
@@ -36,6 +36,14 @@ function Router() {
           element={
             <ProtectedRoute>
               <RegisterEmployee />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           }
         />
