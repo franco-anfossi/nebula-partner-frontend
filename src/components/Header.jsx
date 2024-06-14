@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { USER_TYPE } from '../constants';
 
-function Header({ userData }) {
+function Header() {
   const navigate = useNavigate();
   const user_type = localStorage.getItem(USER_TYPE);
 
@@ -16,6 +15,10 @@ function Header({ userData }) {
 
   const handleHome = () => {
     navigate('/');
+  };
+
+  const handleUserPage = () => {
+    navigate('/profile');
   };
 
   return (
@@ -33,11 +36,6 @@ function Header({ userData }) {
       >
         PARTNER
       </div>
-      {userData && (
-        <div className="text-white text-md mr-4 font-bold">
-          {`${userData.name}`.toUpperCase()}
-        </div>
-      )}
       <div className="flex space-x-4">
         {user_type === 'company' && (
           <button
@@ -48,6 +46,12 @@ function Header({ userData }) {
           </button>
         )}
         <button
+          onClick={handleUserPage}
+          className="bg-white text-indigo-600 font-bold py-2 px-4 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          Profile
+        </button>
+        <button
           onClick={handleLogout}
           className="bg-white text-indigo-600 font-bold py-2 px-4 rounded hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
@@ -57,9 +61,5 @@ function Header({ userData }) {
     </header>
   );
 }
-
-Header.propTypes = {
-  userData: PropTypes.object,
-};
 
 export default Header;
