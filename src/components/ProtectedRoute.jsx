@@ -6,57 +6,58 @@ import { Navigate } from 'react-router-dom';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constants';
 
 function ProtectedRoute({ children }) {
-    const [isAuth, setIsAuth] = useState(null);
+  const [isAuth, setIsAuth] = useState(null);
 
-    useEffect(() => {
-        auth().catch(() => setIsAuth(false));
-    }, []);
+  useEffect(() => {
+    auth().catch(() => setIsAuth(false));
+    // eslint-disable-next-line
+  }, []);
 
-    const refreshToken = async () => {
-        const refreshToken = localStorage.getItem(REFRESH_TOKEN);
-        try {
-            const response = await api.post('/api/users/token/refresh', {
-                refresh: refreshToken, 
-            });
-            
-            if (response.status === 200) {
-                localStorage.setItem(ACCESS_TOKEN, response.data.access);
-                setIsAuth(true);
-            } else {
-                setIsAuth(false);
-            }
-        } catch (error) {
-            console.error(error);
-            setIsAuth(false);
-        }
+  const refreshToken = async () => {
+    const refreshToken = localStorage.getItem(REFRESH_TOKEN);
+    try {
+      const response = await api.post('/api/users/token/refresh', {
+        refresh: refreshToken,
+      });
+
+      if (response.status === 200) {
+        localStorage.setItem(ACCESS_TOKEN, response.data.access);
+        setIsAuth(true);
+      } else {
+        setIsAuth(false);
+      }
+    } catch (error) {
+      console.error(error);
+      setIsAuth(false);
     }
+  };
 
-    const auth = async () => {
-        const token = localStorage.getItem(ACCESS_TOKEN);
-        if (!token) {
-            setIsAuth(false);
-            return;
-        }
-        const decoded = jwtDecode(token);
-        const tokenExpiration = decoded.exp;
-        const currentTime = Date.now() / 1000;
-
-        if (tokenExpiration < currentTime) {
-            await refreshToken();
-        } else {
-            setIsAuth(true);
-        }
+  const auth = async () => {
+    const token = localStorage.getItem(ACCESS_TOKEN);
+    if (!token) {
+      setIsAuth(false);
+      return;
     }
+    const decoded = jwtDecode(token);
+    const tokenExpiration = decoded.exp;
+    const currentTime = Date.now() / 1000;
 
-    if (isAuth === null) {
-        return <div>Loading...</div>
+    if (tokenExpiration < currentTime) {
+      await refreshToken();
+    } else {
+      setIsAuth(true);
     }
+  };
 
-    return isAuth ? children : <Navigate to="/login" />
+  if (isAuth === null) {
+    return <div>Loading...</div>;
+  }
+
+  return isAuth ? children : <Navigate to="/login" />;
 }
 
 ProtectedRoute.propTypes = {
-    children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default ProtectedRoute;

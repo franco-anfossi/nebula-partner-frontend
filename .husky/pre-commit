@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+nvm use 20.12.2
+
+. "$(dirname -- "$0")/_/husky.sh"
+
+npm run lint && npm run lint:fix
