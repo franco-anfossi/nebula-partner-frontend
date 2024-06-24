@@ -4,6 +4,8 @@ import api from '../api';
 const BuyerHome = () => {
   const [posts, setPosts] = useState([]);
   const [newPost, setNewPost] = useState({ title: '', description: '' });
+  const [selectedSeller, setSelectedSeller] = useState(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   useEffect(() => {
     fetchPosts();
@@ -38,6 +40,30 @@ const BuyerHome = () => {
       ...prevState,
       [name]: value,
     }));
+  };
+
+  const handleSelectSeller = (postId, sellerRut) => {
+    setSelectedSeller({ postId, sellerRut });
+    setShowConfirmation(true);
+  };
+
+  const handleConfirmSelection = async () => {
+    try {
+      const { postId, sellerRut } = selectedSeller;
+      await api.post(`/api/posts/posts/${postId}/choose-seller/`, {
+        seller_rut: sellerRut,
+      });
+      setShowConfirmation(false);
+      setSelectedSeller(null);
+      fetchPosts(); // Refresh posts after selecting a seller
+    } catch (error) {
+      console.error('Error selecting seller:', error);
+    }
+  };
+
+  const handleCancelSelection = () => {
+    setShowConfirmation(false);
+    setSelectedSeller(null);
   };
 
   return (
@@ -90,26 +116,57 @@ const BuyerHome = () => {
                   {post.chosen_seller.rut})
                 </p>
               )}
-              <div>
-                <strong>Possible Sellers:</strong>
-                {post.possible_sellers.length > 0 ? (
-                  <ul className="list-disc list-inside">
-                    {post.possible_sellers.map((seller) => (
-                      <li key={seller.id}>
-                        {seller.name} ({seller.rut})
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>No possible sellers.</p>
-                )}
-              </div>
+              {!post.is_sold && (
+                <div>
+                  <strong>Possible Sellers:</strong>
+                  {post.possible_sellers.length > 0 ? (
+                    <ul className="list-disc list-inside">
+                      {post.possible_sellers.map((seller) => (
+                        <li key={seller.id}>
+                          <button
+                            onClick={() =>
+                              handleSelectSeller(post.id, seller.rut)
+                            }
+                            className="hover:underline text-blue-500"
+                          >
+                            {seller.name} ({seller.rut})
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>No possible sellers.</p>
+                  )}
+                </div>
+              )}
             </li>
           ))
         ) : (
           <li>No posts available</li>
         )}
       </ul>
+      {showConfirmation && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+          <div className="bg-white p-6 rounded shadow">
+            <h2 className="text-xl mb-4">Confirm Selection</h2>
+            <p>Are you sure you want to choose this seller?</p>
+            <div className="mt-4 flex justify-end space-x-4">
+              <button
+                onClick={handleConfirmSelection}
+                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700"
+              >
+                Yes
+              </button>
+              <button
+                onClick={handleCancelSelection}
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700"
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
